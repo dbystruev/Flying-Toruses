@@ -16,35 +16,34 @@ class GameViewController: UIViewController {
         super.viewDidLoad()
         
         // create a new scene
-        let scene = SCNScene(named: "art.scnassets/ship.scn")!
+        let scene = SCNScene()
         
-        // create and add a camera to the scene
-        let cameraNode = SCNNode()
-        cameraNode.camera = SCNCamera()
-        scene.rootNode.addChildNode(cameraNode)
+        // create and add lights to the scene
+        createLights(positions: [/*SCNVector3(0, 10, 10)*/]).forEach { node in scene.rootNode.addChildNode(node)
+        }
         
-        // place the camera
-        cameraNode.position = SCNVector3(x: 0, y: 0, z: 15)
+        // add a plane to the scene
+        scene.rootNode.addChildNode(createPlane(0, 0, 0))
+
+        // add a torus to the scene
+        let ring = createRing(0, 2, -100)
+        scene.rootNode.addChildNode(ring)
         
-        // create and add a light to the scene
-        let lightNode = SCNNode()
-        lightNode.light = SCNLight()
-        lightNode.light!.type = .omni
-        lightNode.position = SCNVector3(x: 0, y: 10, z: 10)
-        scene.rootNode.addChildNode(lightNode)
+        // create a camera
+        let camera = createCamera(5, 5, 0)
         
-        // create and add an ambient light to the scene
-        let ambientLightNode = SCNNode()
-        ambientLightNode.light = SCNLight()
-        ambientLightNode.light!.type = .ambient
-        ambientLightNode.light!.color = UIColor.darkGray
-        scene.rootNode.addChildNode(ambientLightNode)
+        // make camera to look at torus all the time
+        let constraint = SCNLookAtConstraint(target: ring)
+        constraint.isGimbalLockEnabled = true
+        camera.constraints = [constraint]
         
-        // retrieve the ship node
-        let ship = scene.rootNode.childNode(withName: "ship", recursively: true)!
+        // add the camera to the scene
+        scene.rootNode.addChildNode(camera)
         
         // animate the 3d object
-        ship.runAction(SCNAction.repeatForever(SCNAction.rotateBy(x: 0, y: 2, z: 0, duration: 1)))
+        ring.runAction(SCNAction.repeatForever(
+            SCNAction.moveBy(x: 0, y: 0, z: 25, duration: 1)
+        ))
         
         // retrieve the SCNView
         let scnView = self.view as! SCNView
@@ -53,7 +52,7 @@ class GameViewController: UIViewController {
         scnView.scene = scene
         
         // allows the user to manipulate the camera
-        scnView.allowsCameraControl = true
+//        scnView.allowsCameraControl = true
         
         // show statistics such as fps and timing information
         scnView.showsStatistics = true
@@ -64,6 +63,71 @@ class GameViewController: UIViewController {
         // add a tap gesture recognizer
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         scnView.addGestureRecognizer(tapGesture)
+    }
+    
+    func createCamera(_ x: Float, _ y: Float, _ z: Float) -> SCNNode {
+        // create a camera
+        let cameraNode = SCNNode()
+        cameraNode.camera = SCNCamera()
+        
+        // place the camera
+        cameraNode.position = SCNVector3(x: x, y: y, z: z)
+        
+        return cameraNode
+    }
+    
+    func createLights(positions: [SCNVector3]) -> [SCNNode] {
+        var lightNodes = [SCNNode]()
+        
+        // create and add lights to the scene
+        positions.forEach { position in
+            let lightNode = SCNNode()
+            lightNode.light = SCNLight()
+            lightNode.light!.type = .omni
+            lightNode.position = position
+            lightNodes.append(lightNode)
+        }
+        
+        // create and add an ambient light to the scene
+        let ambientLightNode = SCNNode()
+        ambientLightNode.light = SCNLight()
+        ambientLightNode.light!.type = .ambient
+        ambientLightNode.light!.color = UIColor.darkGray
+        lightNodes.append(ambientLightNode)
+        
+        return lightNodes
+    }
+    
+    func createRing(_ x: Float, _ y: Float, _ z: Float) -> SCNNode {
+        let gold = SCNMaterial()
+        gold.diffuse.contents = #colorLiteral(red: 0.9607843161, green: 0.7058823705, blue: 0.200000003, alpha: 1)
+        
+        let torus = SCNTorus(ringRadius: 1, pipeRadius: 0.25)
+        torus.materials = [gold]
+        
+        let torusNode = SCNNode(geometry: torus)
+//        torusNode.eulerAngles.x += Float.pi / 2
+        torusNode.position = SCNVector3(x, y, z)
+        
+        let light = SCNLight()
+        light.type = .omni
+        torusNode.light = light
+        
+        return torusNode
+    }
+    
+    func createPlane(_ x: Float, _ y: Float, _ z: Float) -> SCNNode {
+        let material = SCNMaterial()
+        material.diffuse.contents = UIImage(named: "Earth Texture")
+        
+        let plane = SCNPlane(width: 100, height: 100)
+        plane.materials = [material]
+        
+        let planeNode = SCNNode(geometry: plane)
+        planeNode.eulerAngles.x -= Float.pi / 2
+        planeNode.position = SCNVector3(x, y, z)
+        
+        return planeNode
     }
     
     @objc
