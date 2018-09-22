@@ -13,6 +13,7 @@
 		69482FB4215630590097A5CF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 69482FB2215630590097A5CF /* Main.storyboard */; };
 		69482FB62156305C0097A5CF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 69482FB52156305C0097A5CF /* Assets.xcassets */; };
 		69482FB92156305C0097A5CF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 69482FB72156305C0097A5CF /* LaunchScreen.storyboard */; };
+		697C60952156BC5B00866F40 /* Flying Torus.png in Resources */ = {isa = PBXBuildFile; fileRef = 697C60942156BC5B00866F40 /* Flying Torus.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		69482FB52156305C0097A5CF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		69482FB82156305C0097A5CF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		69482FBA2156305C0097A5CF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		697C60942156BC5B00866F40 /* Flying Torus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Flying Torus.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,6 +44,7 @@
 			children = (
 				69482FAB215630590097A5CF /* Flying Toruses */,
 				69482FAA215630590097A5CF /* Products */,
+				697C60932156BC5B00866F40 /* images */,
 			);
 			sourceTree = "<group>";
 		};
@@ -65,6 +68,15 @@
 				69482FBA2156305C0097A5CF /* Info.plist */,
 			);
 			path = "Flying Toruses";
+			sourceTree = "<group>";
+		};
+		697C60932156BC5B00866F40 /* images */ = {
+			isa = PBXGroup;
+			children = (
+				697C60942156BC5B00866F40 /* Flying Torus.png */,
+			);
+			name = images;
+			path = "Flying Toruses/images";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -125,6 +137,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				697C60952156BC5B00866F40 /* Flying Torus.png in Resources */,
 				69482FAF215630590097A5CF /* art.scnassets in Resources */,
 				69482FB92156305C0097A5CF /* LaunchScreen.storyboard in Resources */,
 				69482FB62156305C0097A5CF /* Assets.xcassets in Resources */,
@@ -289,6 +302,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8J39KF9DMS;
 				INFOPLIST_FILE = "Flying Toruses/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -307,6 +321,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8J39KF9DMS;
 				INFOPLIST_FILE = "Flying Toruses/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

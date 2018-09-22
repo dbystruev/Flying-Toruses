@@ -23,14 +23,14 @@ class GameViewController: UIViewController {
         }
         
         // add a plane to the scene
-        scene.rootNode.addChildNode(createPlane(0, 0, 0))
+        scene.rootNode.addChildNode(createPlane(0, -2, 0))
 
         // add a torus to the scene
-        let ring = createRing(0, 2, -100)
+        let ring = createRing(0, 0, -100)
         scene.rootNode.addChildNode(ring)
         
         // create a camera
-        let camera = createCamera(5, 5, 0)
+        let camera = createCamera(0, 5, 5)
         
         // make camera to look at torus all the time
         let constraint = SCNLookAtConstraint(target: ring)
@@ -40,10 +40,16 @@ class GameViewController: UIViewController {
         // add the camera to the scene
         scene.rootNode.addChildNode(camera)
         
+        
         // animate the 3d object
-        ring.runAction(SCNAction.repeatForever(
-            SCNAction.moveBy(x: 0, y: 0, z: 25, duration: 1)
-        ))
+        let interval = TimeInterval(Int.max)
+        
+        ring.runAction(
+            SCNAction.customAction(duration: interval) {
+                node, elapsedTime in
+                node.position = self.getPosition(at: TimeInterval(elapsedTime))
+            }
+        )
         
         // retrieve the SCNView
         let scnView = self.view as! SCNView
@@ -120,7 +126,7 @@ class GameViewController: UIViewController {
         let material = SCNMaterial()
         material.diffuse.contents = UIImage(named: "Earth Texture")
         
-        let plane = SCNPlane(width: 100, height: 100)
+        let plane = SCNPlane(width: 250, height: 250)
         plane.materials = [material]
         
         let planeNode = SCNNode(geometry: plane)
@@ -128,6 +134,16 @@ class GameViewController: UIViewController {
         planeNode.position = SCNVector3(x, y, z)
         
         return planeNode
+    }
+    
+    func getPosition(at time: TimeInterval) -> SCNVector3 {
+        let radius = Float(50)
+        let x = radius * Float(cos(time / 2))
+        let z = radius * Float(sin(time))
+        
+//        print(#function, x, z)
+        
+        return SCNVector3(x, 0, z)
     }
     
     @objc
